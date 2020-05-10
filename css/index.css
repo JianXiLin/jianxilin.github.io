@@ -624,7 +624,7 @@ body::after {
   position: fixed;
   height: 100vh;
   z-index: -2;
-  background: url("https://jianxi-md-pics.oss-cn-beijing.aliyuncs.com/UTOOLS1589087917990.jpeg") no-repeat center/cover;
+  background: url("https://jianxi-md-pics.oss-cn-beijing.aliyuncs.com/UTOOLS1589091960267.jpeg") no-repeat center/cover;
 }
 body::before {
   content: '';
@@ -941,7 +941,7 @@ body::before {
   z-index: 0;
   width: 100%;
   height: 100%;
-  background: url("https://jianxi-md-pics.oss-cn-beijing.aliyuncs.com/UTOOLS1589081282093.png") no-repeat center/cover;
+  background: url("https://jianxi-md-pics.oss-cn-beijing.aliyuncs.com/UTOOLS1589091964926.jpeg") no-repeat center/cover;
 }
 .header-banner::before {
   content: '';
