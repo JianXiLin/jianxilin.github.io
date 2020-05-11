@@ -2857,6 +2857,15 @@ body a:hover {
     display: inline-block;
 	vertical-align: middle;
 }
+@media screen and (max-width: 768px){
+	.main>.main-inner>.content-wrap>.content-home>.postlist>.postlist-item>.post-body>.gallery{
+		width: 100%;
+	}
+	.main>.main-inner>.content-wrap>.content-home>.postlist>.postlist-item>.post-body>.post-excerpt{
+		width: 100%;
+	}
+}
+
 /*readmore button*/
 .post-readmore__link{
 	background-color: #27ae60;
