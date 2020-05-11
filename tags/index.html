@@ -22,7 +22,7 @@ var CONFIG = {
   algolia: undefined,
   fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
   sidebar: {"offsetTop":"20px","tocMaxDepth":6},
-  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
   postWidget: {"endText":true},
   nightMode: {"enable":true},
   back2top: {"enable":true},
@@ -297,7 +297,7 @@ window.addEventListener('DOMContentLoaded', function () {
     meta: guest_info,
     pageSize: '10' || 10,
     visitor: false,
-    recordIP: false,
+    recordIP: true,
     lang: 'zh-cn' || 'zh-cn',
     path: window.location.pathname
   });
