@@ -2801,7 +2801,8 @@ body h5,
 body h6 {
   color: #424242;
 }
-body p {
+body p,
+body li {
   letter-spacing: 0.15em;
 }
 body a {
