@@ -1,0 +1,505 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.0.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.0.0" type="image/png" sizes="32x32"><meta name="description" content="1、jar包引入       12345&lt;dependency&gt;      &lt;groupId&gt;org.hibernate&lt;&#x2F;groupId&gt;      &lt;artifactId&gt;hibernate-validator&lt;&#x2F;artifactId&gt;      &lt;version&gt;6.0.9.Final&lt;&#x2F;ve">
+<meta property="og:type" content="article">
+<meta property="og:title" content="validation的基本使用">
+<meta property="og:url" content="https://jianxilin.github.io/2020/05/27/validation%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Jianxi&#39;s Blog">
+<meta property="og:description" content="1、jar包引入       12345&lt;dependency&gt;      &lt;groupId&gt;org.hibernate&lt;&#x2F;groupId&gt;      &lt;artifactId&gt;hibernate-validator&lt;&#x2F;artifactId&gt;      &lt;version&gt;6.0.9.Final&lt;&#x2F;ve">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2019/12/25/DkXS72z8ymVHs9g.png">
+<meta property="article:published_time" content="2020-05-27T13:26:39.000Z">
+<meta property="article:modified_time" content="2020-05-27T13:55:53.527Z">
+<meta property="article:author" content="JianxiLin">
+<meta property="article:tag" content="java vaildation 数据校验">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/12/25/DkXS72z8ymVHs9g.png"><meta name="keywords" content="JianxiLin, Jianxi's Blog"><meta name="description" content=""><title>validation的基本使用 | Jianxi's Blog</title><link ref="canonical" href="https://jianxilin.github.io/2020/05/27/validation%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.0.0"><link rel="dns-prefetch" href="https://tajs.qq.com"><script>(function() {
+  var hm = document.createElement('script');
+  hm.src = 'https://tajs.qq.com/stats?sId=66555307';
+  hm.async = true;
+
+  if (false) {
+    hm.setAttribute('data-pjax', '');
+  }
+  var s = document.getElementsByTagName('script')[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":false,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: true,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: {"colWidth":"390px","gapX":"15px"},
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 4.2.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner header-inner--height header-inner--bgcolor"><nav class="header-nav header-nav--sticky"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/tags/"><span class="header-nav-menu-item__icon"><i class="fas fa-tags"></i></span><span class="header-nav-menu-item__text">标签</span></a></div></div><div class="header-nav-search"><span class="header-nav-search__icon"><i class="fas fa-search"></i></span><span class="header-nav-search__text">搜索</span></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">validation的基本使用</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2020-05-27</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2020-05-27</span></span><span class="post-meta-item post-meta-item--wordcount"><span class="post-meta-item__icon"><i class="far fa-file-word"></i></span><span class="post-meta-item__info">字数统计</span><span class="post-meta-item__value">1.3k</span></span><span class="post-meta-item post-meta-item--readtime"><span class="post-meta-item__icon"><i class="far fa-clock"></i></span><span class="post-meta-item__info">阅读时长</span><span class="post-meta-item__value">7分</span></span><span class="post-meta-item post-meta-item--visitors"><span class="post-meta-item__icon"><i class="fas fa-eye"></i></span><span class="post-meta-item__info">阅读次数</span><span class="post-meta-item__value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body"><div class="gallery"><img src="https://i.loli.net/2019/12/25/DkXS72z8ymVHs9g.png"></div>
+        <h2 id="1、jar包引入"   >
+          <a href="#1、jar包引入" class="heading-link"><i class="fas fa-link"></i></a>1、jar包引入</h2>
+      <figure class="highlight"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.hibernate&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;6.0.9.Final&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></div></figure>
+<a id="more"></a>
+
+        <h2 id="2、校验注解"   >
+          <a href="#2、校验注解" class="heading-link"><i class="fas fa-link"></i></a>2、校验注解</h2>
+      <p>不仅仅只是可用在实体类中，也可用在（使用了@Validated ）controller、<br>service的方法参数，service方法返回值。<br>注解一般不会处理null情况。</p>
+<p><span class="exturl"><a class="exturl__link"   href="https://blog.csdn.net/java_collect/article/details/85534054"  target="_blank" rel="noopener">👉原文链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@NotNull</td>
+<td>被注释的元素（任何元素）必须不为 null, 集合为空也是可以的。没啥实际意义</td>
+</tr>
+<tr>
+<td>@NotEmpty</td>
+<td>用来校验字符串、集合、map、数组不能为null或空 （字符串传入空格也不可以）（集合需至少包含一个元素）</td>
+</tr>
+<tr>
+<td>@NotBlank</td>
+<td>只用来校验字符串不能为null，空格也是被允许的 。校验字符串推荐使用@NotEmpty</td>
+</tr>
+<tr>
+<td>@Size(max=, min=)</td>
+<td>指定的字符串、集合、map、数组长度必须在指定的max和min内 允许元素为null，字符串允许为空格，==为null时，不生效。==</td>
+</tr>
+<tr>
+<td>@Length(min=,max=)</td>
+<td>只用来校验字符串，长度必须在指定的max和min内 允许元素为null</td>
+</tr>
+<tr>
+<td>@Range(min=,max=)</td>
+<td>用来校验数字或字符串的大小必须在指定的min和max内，字符串会转成数字进行比，如果不是数字校验不通过，允许元素为null</td>
+</tr>
+<tr>
+<td>@Min()</td>
+<td>校验数字（包括integer short long int 等）的最小值，不支持小数即double和float，允许元素为null</td>
+</tr>
+<tr>
+<td>@Max()</td>
+<td>校验数字（包括integer short long int 等）的最小值，不支持小数即double和float，允许元素为null</td>
+</tr>
+<tr>
+<td>@Pattern()</td>
+<td>正则表达式匹配，可用来校验年月日格式，是否包含特殊字符（regexp = “^[a-zA-Z0-9\u4e00-\u9fa5</td>
+</tr>
+</tbody></table></div>
+<p>🔹 不常用</p>
+<figure class="highlight plain"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Null 被注释的元素必须为 null</span><br><span class="line">@AssertTrue 被注释的元素必须为 true</span><br><span class="line">@AssertFalse 被注释的元素必须为 false</span><br><span class="line">@DecimalMin(value) 被注释的元素必须是一个数字，其值必须大于等于指定的最小值</span><br><span class="line">@DecimalMax(value) 被注释的元素必须是一个数字，其值必须小于等于指定的最大值</span><br><span class="line">@Digits (integer, fraction) 被注释的元素必须是一个数字，其值必须在可接受的范围内</span><br><span class="line">@Past 被注释的元素必须是一个过去的日期</span><br><span class="line">@Future 被注释的元素必须是一个将来的日期</span><br><span class="line">@Email 被注释的元素必须是电子邮箱地址</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3、注解"   >
+          <a href="#3、注解" class="heading-link"><i class="fas fa-link"></i></a>3、注解</h2>
+      
+        <h3 id="3-1、-Validated"   >
+          <a href="#3-1、-Validated" class="heading-link"><i class="fas fa-link"></i></a>3.1、@Validated</h3>
+      
+        <h3 id="3-2、-RestController"   >
+          <a href="#3-2、-RestController" class="heading-link"><i class="fas fa-link"></i></a>3.2、@RestController</h3>
+      
+        <h3 id="3-3、-Valid"   >
+          <a href="#3-3、-Valid" class="heading-link"><i class="fas fa-link"></i></a>3.3、@Valid</h3>
+      <pre><code>标记需验证的参数，可用于controller中方法的参数，也可在spring中，
+可用于联级验证中的一对一、一对多。
+A、一对一: 一个对象中包含另一个对象作为属性。
+    对这个对象属性添加该注解，这该对象中的验证也可使用。
+B、一对多：一个对象中包含另一个对象容器作为属性。
+    注解可加在属性上，也可加载list泛型前。</code></pre><p><img src="https://i.loli.net/2019/12/25/D2lnKajL7B3FWZX.png" alt="title"></p>
+
+        <h3 id="3-4-ExceptionHandler"   >
+          <a href="#3-4-ExceptionHandler" class="heading-link"><i class="fas fa-link"></i></a>3.4 @ExceptionHandler</h3>
+      <pre><code>在spring中，添加该注解的方法可对某异常进行捕获。
+例如：MethodArgumentNotValidException e</code></pre><p><img src="https://i.loli.net/2019/12/25/DkXS72z8ymVHs9g.png" alt="title"></p>
+
+        <h2 id="4、在service中添加参数验收"   >
+          <a href="#4、在service中添加参数验收" class="heading-link"><i class="fas fa-link"></i></a>4、在service中添加参数验收</h2>
+      
+        <h3 id="4-1、实现方法"   >
+          <a href="#4-1、实现方法" class="heading-link"><i class="fas fa-link"></i></a>4.1、实现方法</h3>
+      <pre><code>同controller。在类上添加@Validated，之后在需要进行参数验收
+的参数前添加@Vaild。</code></pre>
+        <h3 id="4-2、注意事项"   >
+          <a href="#4-2、注意事项" class="heading-link"><i class="fas fa-link"></i></a>4.2、注意事项</h3>
+      <pre><code>A、注解添加的位置。
+   @Vaild     ：不能添加在接口实现类中，需放置在service的接口类中。
+   @Vaildated ：可添加在实现类或接口类中。
+        添加在接口类时，其对应的实现类也会进行参数验收。
+B、需捕获的异常不同于controller。
+   并不是MethodArgumentNotValidException，
+   而是ConstraintViolationException(原生态的异常)</code></pre><p><img src="https://i.loli.net/2019/12/25/LfBN1nYHap4oICl.png" alt="title"></p>
+
+        <h2 id="5、分组验收"   >
+          <a href="#5、分组验收" class="heading-link"><i class="fas fa-link"></i></a>5、分组验收</h2>
+      <p>无法使用于Service中</p>
+
+        <h3 id="5-1、使用场景"   >
+          <a href="#5-1、使用场景" class="heading-link"><i class="fas fa-link"></i></a>5.1、使用场景</h3>
+      <pre><code>对于不同功能，其对同一个实体的验证需求不同，则需要使用分组验收。
+例如：添加新用户时，用户id需要为空值。而修改用户时，用户id则不能为空值。</code></pre>
+        <h3 id="5-2、实现"   >
+          <a href="#5-2、实现" class="heading-link"><i class="fas fa-link"></i></a>5.2、实现</h3>
+      <p>1️⃣ A、设置分组</p>
+<pre><code>利用参数验证注解中的groups参数。
+未设置分组的参数属于默认分组</code></pre><p><img src="https://i.loli.net/2019/12/25/N4YIeB2XiAG7zOM.png" alt="title"></p>
+<p>2️⃣ 指定分组</p>
+<pre><code>由于@Valid无法实现该功能，故需使用@Validated来标记需参数验收的参数。
+利用@Validated的value来指定分组。</code></pre><p><img src="https://i.loli.net/2019/12/25/xBirm8CySeluRdO.png" alt="title"></p>
+
+        <h2 id="6、自定义注解"   >
+          <a href="#6、自定义注解" class="heading-link"><i class="fas fa-link"></i></a>6、自定义注解</h2>
+      
+        <h3 id="6-1-实现"   >
+          <a href="#6-1-实现" class="heading-link"><i class="fas fa-link"></i></a>6.1 实现</h3>
+      <p><img src="https://i.loli.net/2019/12/25/to8ImMyNliRhbLk.png" alt="title"></p>
+
+        <h4 id="A、实现注解（eg：MultipleOfThree）"   >
+          <a href="#A、实现注解（eg：MultipleOfThree）" class="heading-link"><i class="fas fa-link"></i></a>A、实现注解（eg：MultipleOfThree）</h4>
+      <p><img src="https://i.loli.net/2019/12/25/MhaCUDuZzye8drA.png" alt="title"></p>
+
+        <h5 id="B、实现业务处理类（实现-ConstrainValidator接口）"   >
+          <a href="#B、实现业务处理类（实现-ConstrainValidator接口）" class="heading-link"><i class="fas fa-link"></i></a>B、实现业务处理类（实现 ConstrainValidator接口）</h5>
+      <p><img src="https://i.loli.net/2019/12/25/3ZmneUurxVYgT7t.png" alt="title"><br><img src="https://i.loli.net/2019/12/25/gEj84YzF1u6NJWp.png" alt="title"></p>
+
+        <h2 id="7、校验List中的参数"   >
+          <a href="#7、校验List中的参数" class="heading-link"><i class="fas fa-link"></i></a>7、校验List中的参数</h2>
+      
+        <h3 id="7-1、获取validtor"   >
+          <a href="#7-1、获取validtor" class="heading-link"><i class="fas fa-link"></i></a>7.1、获取validtor</h3>
+      <p>1️⃣ 获取validtor</p>
+<p><img src="https://i.loli.net/2019/12/26/nBJNFeyPDsrhQgZ.png" alt="title"></p>
+<p>2️⃣ 从SpringBoot中获取(创建工具类获取，不直接注入到使用类中，因为Validtor非单例)</p>
+<p><img src="https://i.loli.net/2019/12/26/nISaLUHBzZmWRot.png" alt="title"></p>
+
+        <h3 id="7-2、创建自定义注解"   >
+          <a href="#7-2、创建自定义注解" class="heading-link"><i class="fas fa-link"></i></a>7.2、创建自定义注解</h3>
+      <p><img src="https://i.loli.net/2019/12/26/q58ZYX9MDJyTAiU.png" alt="title"></p>
+
+        <h3 id="7-3、创建注解处理类"   >
+          <a href="#7-3、创建注解处理类" class="heading-link"><i class="fas fa-link"></i></a>7.3、创建注解处理类</h3>
+      <p>1️⃣ 注解处理类</p>
+<p><img src="https://i.loli.net/2019/12/26/3Di65jMOXscZThI.png" alt="title"></p>
+<p>2️⃣ 自定义异常类(由于处理类默认返回boolean,需改成抛出异常)</p>
+<p><img src="https://i.loli.net/2019/12/26/CHNldPUWcu3Mf7r.png" alt="title"></p>
+<p>3️⃣ 捕获该异常类</p>
+<p><img src="https://i.loli.net/2019/12/26/nlPAOJpXVyEtmML.png" alt="title"></p>
+<p>4️⃣ 使用注解</p>
+<p><img src="https://i.loli.net/2019/12/26/PGpiIoOXDsMfxlz.png" alt="title"></p>
+
+        <h2 id="8、参数间的逻辑校验"   >
+          <a href="#8、参数间的逻辑校验" class="heading-link"><i class="fas fa-link"></i></a>8、参数间的逻辑校验</h2>
+      
+        <h3 id="8-1、实现思路（分组动态化）"   >
+          <a href="#8-1、实现思路（分组动态化）" class="heading-link"><i class="fas fa-link"></i></a>8.1、实现思路（分组动态化）</h3>
+      <p>🔹 利用hibernate.validator 中提供的SequenceProvider——可进行分组的添加<br> &emsp;&emsp;通过SequenceProvider 来根据被校验的对象的属性变化，对添加分组。<br><img src="https://i.loli.net/2019/12/26/8cwdxmS9b7NZzHo.png" alt="title"></p>
+
+        <h3 id="8-2、实现方法"   >
+          <a href="#8-2、实现方法" class="heading-link"><i class="fas fa-link"></i></a>8.2、实现方法</h3>
+      <p>1️⃣ 创建SequenceProvider，在添加默认分组后，进行逻辑判断，以添加不同分组。<br><img src="https://i.loli.net/2019/12/26/a1W9O8dNApFCqiY.png" alt="title"></p>
+<p>2️⃣ 使用SequenceProvider，在实体类中使用@GroupSequenceProvider<br><img src="https://i.loli.net/2019/12/26/DvpoSIg1M7WtqU8.png" alt="title"></p>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://jianxilin.github.io">JianxiLin</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://jianxilin.github.io/2020/05/27/validation%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">https://jianxilin.github.io/2020/05/27/validation%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><div class="post-tags"><span class="post-tags-item"><span class="post-tags-item__icon"><i class="fas fa-tag"></i></span><a class="post-tags-item__link" href="https://jianxilin.github.io/tags/java-vaildation-%E6%95%B0%E6%8D%AE%E6%A0%A1%E9%AA%8C/">java vaildation 数据校验</a></span></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2020/05/27/axios%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><span class="paginator-prev__text">axios的基本使用</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div><div class="comments" id="comments"><div id="valine-container"></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、jar包引入"><span class="toc-text">
+          1、jar包引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、校验注解"><span class="toc-text">
+          2、校验注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、注解"><span class="toc-text">
+          3、注解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1、-Validated"><span class="toc-text">
+          3.1、@Validated</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2、-RestController"><span class="toc-text">
+          3.2、@RestController</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3、-Valid"><span class="toc-text">
+          3.3、@Valid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-ExceptionHandler"><span class="toc-text">
+          3.4 @ExceptionHandler</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、在service中添加参数验收"><span class="toc-text">
+          4、在service中添加参数验收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1、实现方法"><span class="toc-text">
+          4.1、实现方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2、注意事项"><span class="toc-text">
+          4.2、注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、分组验收"><span class="toc-text">
+          5、分组验收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1、使用场景"><span class="toc-text">
+          5.1、使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2、实现"><span class="toc-text">
+          5.2、实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、自定义注解"><span class="toc-text">
+          6、自定义注解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-实现"><span class="toc-text">
+          6.1 实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A、实现注解（eg：MultipleOfThree）"><span class="toc-text">
+          A、实现注解（eg：MultipleOfThree）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#B、实现业务处理类（实现-ConstrainValidator接口）"><span class="toc-text">
+          B、实现业务处理类（实现 ConstrainValidator接口）</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7、校验List中的参数"><span class="toc-text">
+          7、校验List中的参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1、获取validtor"><span class="toc-text">
+          7.1、获取validtor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2、创建自定义注解"><span class="toc-text">
+          7.2、创建自定义注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3、创建注解处理类"><span class="toc-text">
+          7.3、创建注解处理类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8、参数间的逻辑校验"><span class="toc-text">
+          8、参数间的逻辑校验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1、实现思路（分组动态化）"><span class="toc-text">
+          8.1、实现思路（分组动态化）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2、实现方法"><span class="toc-text">
+          8.2、实现方法</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="https://jianxi-md-pics.oss-cn-beijing.aliyuncs.com/note-md-imgs/blog-avar.png" alt="avatar"></div><p class="sidebar-ov-author__text">一点一滴💧...🌊</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">8</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">15</div><div class="sidebar-ov-state-item__name">分类</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--tags" href="/tags/"><div class="sidebar-ov-state-item__count">9</div><div class="sidebar-ov-state-item__name">标签</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2020</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>JianxiLin</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span> v4.2.0</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span><span> v2.0.0</span></div><div class="busuanzi"><span class="busuanzi-siteuv"><span class="busuanzi-siteuv__icon"><i class="fas fa-user"></i></span><span class="busuanzi-siteuv__info">访问人数</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_uv"></span></span><span class="busuanzi-sitepv"><span class="busuanzi-siteuv__icon"><i class="fas fa-eye"></i></span><span class="busuanzi-siteuv__info">浏览总量</span><span class="busuanzi-siteuv__value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><div class="search-mask"></div><div class="search-popup"><span class="search-close"></span><div class="search-input"><input placeholder="搜索文章（支持多关键词，请用空格分隔）"></div><div class="search-results"></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script><script>function initSearch() {
+  var isXML = true;
+  var search_path = 'search.json';
+
+  if (!search_path) {
+    search_path = 'search.xml';
+  } else if (/json$/i.test(search_path)) {
+    isXML = false;
+  }
+
+  var path = '/' + search_path;
+  $.ajax({
+    url: path,
+    dataType: isXML ? 'xml' : 'json',
+    async: true,
+    success: function (res) {
+      var datas = isXML ? $('entry', res).map(function () {
+        // 将 XML 转为 JSON
+        return {
+          title: $('title', this).text(),
+          content: $('content', this).text(),
+          url: $('url', this).text()
+        };
+      }).get() : res;
+      var $input = $('.search-input input');
+      var $result = $('.search-results');
+      // 搜索对象（标题、内容）的权重，影响显示顺序
+      var WEIGHT = { title: 100, content: 1 };
+      var searchPost = function () {
+        var searchText = $input.val().toLowerCase().trim();
+        // 根据空白字符分隔关键字
+        var keywords = searchText.split(/[\s]+/);
+        // 搜索结果
+        var matchPosts = [];
+
+        // 有多个关键字时，将原文字整个保存下来
+        if (keywords.length > 1) {
+          keywords.push(searchText);
+        }
+        // 防止未输入字符时搜索
+        if (searchText.length > 0) {
+          datas.forEach(function (data) {
+            var isMatch  = false;
+            // 没有标题的文章使用预设的 i18n 变量代替
+            var title = (data.title && data.title.trim()) || '[ 文章无标题 ]';
+            var titleLower = title && title.toLowerCase();
+            // 删除 HTML 标签 和 所有空白字符
+            var content = data.content && data.content.replace(/<[^>]+>/g, '');
+            var contentLower = content && content.toLowerCase();
+            // 删除重复的 /
+            var postURL = data.url && decodeURI(data.url).replace(/\/{2,}/g, '/');
+            // 标题中匹配到的关键词
+            var titleHitSlice = [];
+            // 内容中匹配到的关键词
+            var contentHitSlice = [];
+
+            keywords.forEach(function (keyword) {
+              /**
+              * 获取匹配的关键词的索引
+              * @param {String} keyword 要匹配的关键字
+              * @param {String} text 原文字
+              * @param {Boolean} caseSensitive 是否区分大小写
+              * @param {Number} weight 匹配对象的权重。权重大的优先显示
+              * @return {Array}
+              */
+              function getIndexByword (word, text, caseSensitive, weight) {
+                if (!word || !text) {
+                  return [];
+                };
+
+                var startIndex = 0; // 每次匹配的开始索引
+                var index = -1;     // 匹配到的索引值
+                var result = [];    // 匹配结果
+
+                if (!caseSensitive) {
+                  word = word.toLowerCase();
+                  text = text.toLowerCase();
+                }
+
+                while((index = text.indexOf(word, startIndex)) !== -1) {
+                  var hasMatch = false;
+                  // 索引位置相同的关键词，保留长度较长的
+                  titleHitSlice.forEach(function (hit) {
+                    if (hit.index === index && hit.word.length < word.length) {
+                      hit.word = word;
+                      hasMatch = true;
+                    }
+                  });
+                  startIndex = index + word.length;
+                  !hasMatch && result.push({ index: index, word: word, weight: weight });
+                }
+                return result;
+              }
+              titleHitSlice = titleHitSlice.concat(getIndexByword(keyword, titleLower, false, WEIGHT.title));
+              contentHitSlice = contentHitSlice.concat(getIndexByword(keyword, contentLower, false, WEIGHT.content));
+            });
+
+            var hitTitle = titleHitSlice.length;
+            var hitContent = contentHitSlice.length;
+
+            if (hitTitle > 0 || hitContent > 0) {
+              isMatch = true;
+            }
+            if (isMatch) {
+              ;[titleHitSlice, contentHitSlice].forEach(function (hit) {
+                // 按照匹配文字的索引的递增顺序排序
+                hit.sort(function (left, right) {
+                  return left.index - right.index;
+                });
+              });
+              /**
+              * 给文本中匹配到的关键词添加标记，从而进行高亮显示
+              * @param {String} text 原文本
+              * @param {Array} hitSlice 匹配项的索引信息
+              * @param {Number} start 开始索引
+              * @param {Number} end 结束索引
+              * @return {String}
+              */
+              function highlightKeyword (text, hitSlice, start, end) {
+                if (!text || !hitSlice || !hitSlice.length) {
+                  return;
+                }
+
+                var result = '';
+                var startIndex = start;
+                var endIndex = end;
+                hitSlice.forEach(function (hit) {
+                  if (hit.index < startIndex) {
+                    return;
+                  }
+
+                  var hitWordEnd = hit.index + hit.word.length;
+                  result += text.slice(startIndex, hit.index);
+                  result += '<b>' + text.slice(hit.index, hitWordEnd) + '</b>';
+                  startIndex = hitWordEnd;
+                });
+                result += text.slice(startIndex, endIndex);
+                return result;
+              }
+
+              var postData = {};
+              // 文章总的搜索权重
+              var postWeight = titleHitSlice.length * WEIGHT.title + contentHitSlice.length * WEIGHT.content;
+              // 标记匹配关键词后的标题
+              var postTitle = highlightKeyword(title, titleHitSlice, 0, title.length) || title;
+              // 标记匹配关键词后的内容
+              var postContent;
+              // 显示内容的长度
+              var SHOW_WORD_LENGTH = 200;
+              // 命中关键词前的字符显示长度
+              var SHOW_WORD_FRONT_LENGTH = 20;
+              var SHOW_WORD_END_LENGTH = SHOW_WORD_LENGTH - SHOW_WORD_FRONT_LENGTH;
+
+              // 截取匹配的第一个字符，前后共 200 个字符来显示
+              if (contentHitSlice.length > 0) {
+                var firstIndex = contentHitSlice[0].index;
+                var start = firstIndex > SHOW_WORD_FRONT_LENGTH ? firstIndex - SHOW_WORD_FRONT_LENGTH : 0;
+                var end = firstIndex + SHOW_WORD_END_LENGTH;
+                postContent = highlightKeyword(content, contentHitSlice, start, end);
+              } else { // 未匹配到内容，直接截取前 200 个字符来显示
+                postContent = content.slice(0, SHOW_WORD_LENGTH);
+              }
+              postData.title = postTitle;
+              postData.content = postContent;
+              postData.url = postURL;
+              postData.weight = postWeight;
+              matchPosts.push(postData);
+            }
+          });
+        }
+
+        var resultInnerHtml = '';
+        if (matchPosts.length) {
+          // 按权重递增的顺序排序，使权重大的优先显示
+          matchPosts.sort(function (left, right) {
+            return right.weight - left.weight;
+          });
+          resultInnerHtml += '<ul>';
+          matchPosts.forEach(function (post) {
+            resultInnerHtml += '<li><a class="search-results-title" href="' + post.url + '">';
+            resultInnerHtml += post.title;
+            resultInnerHtml += '</a><div class="search-results-content">';
+            resultInnerHtml += post.content;
+            resultInnerHtml += '</div></li>';
+          });
+          resultInnerHtml += '</ul>';
+        } else {
+          resultInnerHtml += '<div class="search-results-none"><i class="far fa-meh"></i></div>';
+        }
+        $result.html(resultInnerHtml);
+      };
+      $input.on('input', searchPost);
+      $input.on('keyup', function (e) {
+        if (e.keyCode === Stun.utils.codeToKeyCode('Enter')) {
+          searchPost();
+        }
+      });
+    }
+  });
+}
+
+function closeSearch () {
+  $('body').css({ overflow: 'auto' });
+  $('.search-popup').css({ display: 'none' });
+  $('.search-mask').css({ display: 'none' });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  Stun.utils.pjaxReloadLocalSearch = function () {
+    $('.header-nav-search').on('click', function (e) {
+      e.stopPropagation();
+      $('body').css('overflow', 'hidden');
+      $('.search-popup')
+        .velocity('stop')
+        .velocity('transition.expandIn', {
+          duration: 300,
+          complete: function () {
+            $('.search-popup input').focus();
+          }
+        });
+      $('.search-mask')
+        .velocity('stop')
+        .velocity('transition.fadeIn', {
+          duration: 300
+        });
+
+      initSearch();
+    });
+    $('.search-mask, .search-close').on('click', function () {
+      closeSearch();
+    });
+    $(document).on('keydown', function (e) {
+      // Escape <=> 27
+      if (e.keyCode === Stun.utils.codeToKeyCode('Escape')) {
+        closeSearch();
+      }
+    });
+  };
+
+  Stun.utils.pjaxReloadLocalSearch();
+}, false);</script><script src="https://cdn.jsdelivr.net/gh/sukkaw/busuanzi@latest/bsz.pure.mini.js" async></script><script src="https://cdn.jsdelivr.net/npm/leancloud-storage@latest/dist/av-min.js"></script><script src="https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script><script>function loadValine () {
+  var GUEST_INFO = ['nick', 'mail', 'link'];
+  var guest_info = 'nick,mail,link';
+
+  guest_info = guest_info.split(',').filter(function(item) {
+    return GUEST_INFO.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#valine-container',
+    appId: 'IPLKkizaoj5TtXlw9osbqSPl-gzGzoHsz',
+    appKey: 'fQM6iHjAxQ6xoqEghTmtnJGo',
+    notify: true,
+    verify: true,
+    placeholder: 'Just go go',
+    avatar: 'robohash',
+    meta: guest_info,
+    pageSize: '10' || 10,
+    visitor: false,
+    recordIP: true,
+    lang: 'zh-cn' || 'zh-cn',
+    path: window.location.pathname
+  });
+}
+
+if (false) {
+  loadValine();
+} else {
+  window.addEventListener('DOMContentLoaded', loadValine, false);
+}</script><script src="/js/utils.js?v=2.0.0"></script><script src="/js/stun-boot.js?v=2.0.0"></script><script src="/js/scroll.js?v=2.0.0"></script><script src="/js/header.js?v=2.0.0"></script><script src="/js/sidebar.js?v=2.0.0"></script></body></html>
